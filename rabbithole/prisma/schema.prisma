@@ -1,0 +1,33 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  title       String
+  type        String
+  sourceUrl   String?
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  concepts   Concept[]
+}
+
+model Concept {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  definition    String?
+  context       String?
+  prerequisites String   @default("[]")
+  createdAt     DateTime @default(now())
+  documents    Document[]
+  
+  requires     Concept[] @relation("ConceptRequires")
+  requiredBy   Concept[] @relation("ConceptRequiredBy")
+}
