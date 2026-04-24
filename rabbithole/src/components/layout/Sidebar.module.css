@@ -1,0 +1,119 @@
+.sidebar {
+  width: var(--sidebar-expanded);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  transition: width var(--dur-base) var(--ease-out);
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+  padding: var(--space-4) var(--space-2);
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sectionHeader {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  position: relative;
+}
+
+.navItem:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.navItem.active {
+  background: rgba(245,158,11,0.08);
+  color: var(--amber-400);
+}
+
+.navItem.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--amber-500);
+  border-radius: 0 2px 2px 0;
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.navIcon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.navLabel {
+  font-size: 13px;
+  font-family: var(--font-ui);
+  white-space: nowrap;
+}
+
+.badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--bg-overlay);
+  color: var(--text-muted);
+  border-radius: var(--radius-full);
+  padding: 1px 6px;
+}
+
+.collapsed .badge {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}

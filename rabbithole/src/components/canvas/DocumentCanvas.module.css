@@ -1,0 +1,138 @@
+.canvas {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-10);
+  position: relative;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+  line-height: 1.3;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+.tooltip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-tooltip);
+  z-index: 10;
+}
+
+.tooltipArrow {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 9px;
+  height: 9px;
+  background: var(--bg-overlay);
+  border-right: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.tooltipName {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.depthBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(245,158,11,0.1);
+  color: var(--amber-400);
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+.tooltipBody {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.prereqChips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.prereqChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: var(--violet-400);
+  font-family: var(--font-mono);
+  padding: var(--space-1) var(--space-2);
+  background: rgba(139,92,246,0.06);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(139,92,246,0.12);
+}
+
+.tooltipActions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.expandBtn {
+  background: var(--amber-500);
+  color: var(--bg-void);
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+.expandBtn:hover {
+  background: var(--amber-400);
+}
+
+.skipBtn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--dur-fast);
+}
+
+.skipBtn:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}

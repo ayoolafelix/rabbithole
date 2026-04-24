@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  /* ── Core Backgrounds ── */
+  --bg-void:        #06060A;
+  --bg-canvas:      #0D0D12;
+  --bg-surface:     #141418;
+  --bg-elevated:    #1C1C23;
+  --bg-overlay:     #22222C;
+
+  /* ── Borders ── */
+  --border-subtle:   rgba(255,255,255,0.06);
+  --border-default:  rgba(255,255,255,0.10);
+  --border-strong:   rgba(255,255,255,0.18);
+
+  /* ── Text ── */
+  --text-primary:    #F5F4F0;
+  --text-secondary:  #9B9A95;
+  --text-muted:     #4E4D4A;
+  --text-inverse:    #0D0D12;
+
+  /* ── Brand Amber — The Torch (concept expansion) ── */
+  --amber-50:   #FFFBEB;
+  --amber-200:  #FDE68A;
+  --amber-400:  #FBBF24;
+  --amber-500:  #F59E0B;
+  --amber-600:  #D97706;
+  --amber-800:  #92400E;
+  --amber-900:  #451A03;
+
+  /* ── Prerequisite — Violet (Depth) ── */
+  --violet-50:  #F5F3FF;
+  --violet-200: #DDD6FE;
+  --violet-400: #A78BFA;
+  --violet-500: #8B5CF6;
+  --violet-600: #7C3AED;
+  --violet-800: #3730A3;
+  --violet-900: #1E1B4B;
+
+  /* ── Mastered — Emerald (Known) ── */
+  --emerald-400: #34D399;
+  --emerald-500: #10B981;
+  --emerald-600: #059669;
+  --emerald-900: #064E3B;
+
+  /* ── Exploring — Blue (Navigate) ── */
+  --blue-400:  #60A5FA;
+  --blue-500:  #3B82F6;
+  --blue-600:  #2563EB;
+  --blue-900:  #1E3A5F;
+
+  /* ── Semantic ── */
+  --success:  #10B981;
+  --warning:  #F59E0B;
+  --danger:   #EF4444;
+  --info:     #3B82F6;
+
+  /* ── Typography ── */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Lora', Georgia, serif;
+  --font-ui:      'DM Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Spacing ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Radius ── */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+  --shadow-tooltip: 0 8px 24px rgba(0,0,0,0.7);
+
+  /* ── Motion ── */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   350ms;
+
+  /* ── Layout ── */
+  --sidebar-collapsed: 56px;
+  --sidebar-expanded:  240px;
+  --right-panel:       280px;
+  --topbar-height:     52px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  background: var(--bg-void);
+  color-scheme: dark;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── Utility Classes ── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.flex-1 { flex: 1; }

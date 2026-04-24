@@ -1,0 +1,145 @@
+.panel {
+  width: var(--right-panel);
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerTitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.content {
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sectionValue {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.contextBar {
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.contextFill {
+  height: 100%;
+  background: var(--amber-500);
+  border-radius: var(--radius-full);
+}
+
+.contextLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.toggle {
+  width: 36px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--amber-500);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: none;
+  transition: all var(--dur-fast);
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: all var(--dur-fast);
+}
+
+.toggle.off {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+}
+
+.toggle.off::after {
+  right: auto;
+  left: 2px;
+}
+
+.sourceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+}
+
+.sourceIcon {
+  font-size: 14px;
+}
+
+.sourceName {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.sourceMeta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 1200px) {
+  .panel {
+    display: none;
+  }
+}

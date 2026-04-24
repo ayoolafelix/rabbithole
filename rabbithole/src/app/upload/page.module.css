@@ -1,0 +1,184 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: var(--space-8);
+}
+
+.sep {
+  color: var(--text-muted);
+}
+
+.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dropArea {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: var(--space-12) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: all var(--dur-base) var(--ease-out);
+  background: transparent;
+}
+
+.dropArea:hover,
+.dropArea.active {
+  border-color: rgba(245,158,11,0.4);
+  background: rgba(245,158,11,0.03);
+}
+
+.dropIcon {
+  font-size: 32px;
+  color: var(--text-muted);
+}
+
+.dropTitle {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dropSub {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.uploadTypes {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.typeChip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.pasteArea {
+  width: 100%;
+  min-height: 200px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.pasteArea:focus {
+  outline: none;
+  border-color: var(--amber-500);
+}
+
+.pasteArea::placeholder {
+  color: var(--text-muted);
+}
+
+.analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12);
+}
+
+.fileName {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.progressBar {
+  width: 100%;
+  max-width: 300px;
+  height: 4px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--amber-500);
+  border-radius: var(--radius-full);
+  animation: progress 2s ease-out forwards;
+}
+
+@keyframes progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.analysingText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-12);
+}
+
+.successIcon {
+  width: 48px;
+  height: 48px;
+  background: var(--emerald-500);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+.successText {
+  font-size: 16px;
+  color: var(--text-primary);
+  font-weight: 500;
+}

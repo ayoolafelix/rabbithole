@@ -1,0 +1,40 @@
+.concept {
+  position: relative;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0 2px;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.concept.unknown {
+  color: var(--amber-400);
+  background: rgba(245,158,11,0.08);
+  border-bottom: 1px dashed rgba(245,158,11,0.4);
+}
+
+.concept.unknown:hover {
+  background: rgba(245,158,11,0.15);
+}
+
+.concept.prereq {
+  color: var(--violet-400);
+  background: rgba(139,92,246,0.08);
+  border-bottom: 1px dashed rgba(139,92,246,0.4);
+}
+
+.concept.prereq:hover {
+  background: rgba(139,92,246,0.15);
+}
+
+.concept.known {
+  color: var(--emerald-400);
+  background: rgba(16,185,129,0.06);
+  border-bottom: 1px solid rgba(16,185,129,0.3);
+  cursor: default;
+}
+
+.concept.active {
+  color: var(--text-primary);
+  background: rgba(245,158,11,0.2);
+  border-bottom: 1px solid var(--amber-500);
+}
