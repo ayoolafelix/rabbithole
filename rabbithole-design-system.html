@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RabbitHole — Design System v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ── Core Backgrounds ── */
+    --bg-void:        #06060A;
+    --bg-canvas:      #0D0D12;
+    --bg-surface:     #141418;
+    --bg-elevated:    #1C1C23;
+    --bg-overlay:     #22222C;
+
+    /* ── Borders ── */
+    --border-subtle:   rgba(255,255,255,0.06);
+    --border-default:  rgba(255,255,255,0.10);
+    --border-strong:   rgba(255,255,255,0.18);
+
+    /* ── Text ── */
+    --text-primary:    #F5F4F0;
+    --text-secondary:  #9B9A95;
+    --text-muted:      #4E4D4A;
+    --text-inverse:    #0D0D12;
+
+    /* ── Brand Accent — Amber (The Torch) ── */
+    --amber-50:   #FFFBEB;
+    --amber-200:  #FDE68A;
+    --amber-400:  #FBBF24;
+    --amber-500:  #F59E0B;
+    --amber-600:  #D97706;
+    --amber-800:  #92400E;
+    --amber-900:  #451A03;
+
+    /* ── Prerequisite — Violet (Depth) ── */
+    --violet-50:  #F5F3FF;
+    --violet-200: #DDD6FE;
+    --violet-400: #A78BFA;
+    --violet-500: #8B5CF6;
+    --violet-600: #7C3AED;
+    --violet-800: #3730A3;
+    --violet-900: #1E1B4B;
+
+    /* ── Mastered — Emerald (Known) ── */
+    --emerald-400: #34D399;
+    --emerald-500: #10B981;
+    --emerald-600: #059669;
+    --emerald-900: #064E3B;
+
+    /* ── Exploring — Blue (Navigate) ── */
+    --blue-400:  #60A5FA;
+    --blue-500:  #3B82F6;
+    --blue-600:  #2563EB;
+    --blue-900:  #1E3A5F;
+
+    /* ── Semantic ── */
+    --success:  #10B981;
+    --warning:  #F59E0B;
+    --danger:   #EF4444;
+    --info:     #3B82F6;
+
+    /* ── Typography ── */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'Lora', Georgia, serif;
+    --font-ui:      'DM Sans', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+    /* ── Spacing ── */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+
+    /* ── Radius ── */
+    --radius-sm:  4px;
+    --radius-md:  8px;
+    --radius-lg:  12px;
+    --radius-xl:  16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    /* ── Shadows ── */
+    --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+    --shadow-tooltip: 0 8px 24px rgba(0,0,0,0.7);
+
+    /* ── Motion ── */
+    --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+    --dur-fast:   120ms;
+    --dur-base:   200ms;
+    --dur-slow:   350ms;
+
+    /* ── Layout ── */
+    --sidebar-collapsed: 56px;
+    --sidebar-expanded:  240px;
+    --right-panel:       280px;
+    --topbar-height:     52px;
+  }
+
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  /* ── Doc layout ── */
+  .doc { max-width: 960px; margin: 0 auto; padding: var(--space-16) var(--space-8); }
+
+  .doc-header {
+    border-bottom: 1px solid var(--border-default);
+    padding-bottom: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--amber-500);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .version-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--amber-500);
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: var(--radius-full);
+    padding: 2px 10px;
+    letter-spacing: 0.05em;
+    margin-left: var(--space-2);
+  }
+
+  .doc-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    margin-top: var(--space-3);
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: var(--space-16); }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber-500);
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-subtle);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-8);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── Token grid ── */
+  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-6); }
+
+  .token-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .token-swatch { height: 64px; }
+
+  .token-info {
+    background: var(--bg-elevated);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .token-name {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+  }
+
+  .token-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* ── Type samples ── */
+  .type-stack { display: flex; flex-direction: column; gap: var(--space-6); }
+
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .type-meta {
+    width: 140px;
+    flex-shrink: 0;
+  }
+
+  .type-meta-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    display: block;
+  }
+
+  .type-meta-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ── Component showcase ── */
+  .component-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    margin-bottom: var(--space-6);
+  }
+
+  .component-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-5);
+  }
+
+  /* ── ─────────────────────────────────────── ── */
+  /* ── COMPONENT: Top Bar ── */
+  .topbar {
+    height: var(--topbar-height);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-4);
+    gap: var(--space-3);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .topbar-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: var(--space-4);
+    flex-shrink: 0;
+  }
+
+  .topbar-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .breadcrumb-segment { color: var(--text-secondary); white-space: nowrap; }
+  .breadcrumb-segment:hover { color: var(--text-primary); cursor: pointer; text-decoration: underline; }
+  .breadcrumb-segment.active { color: var(--text-primary); font-weight: 500; }
+  .breadcrumb-sep { color: var(--text-muted); font-size: 12px; user-select: none; }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+  }
+
+  .view-toggle {
+    display: flex;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .view-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+
+  .view-btn.active {
+    background: var(--bg-overlay);
+    color: var(--text-primary);
+  }
+
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--violet-500), var(--amber-500));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; color: white;
+    cursor: pointer;
+  }
+
+  /* ── COMPONENT: Sidebar ── */
+  .sidebar-demo {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .sidebar-collapsed {
+    width: 56px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    position: relative;
+  }
+
+  .nav-item:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+  .nav-item.active {
+    background: rgba(245,158,11,0.08);
+    color: var(--amber-400);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 6px; bottom: 6px;
+    width: 2px;
+    background: var(--amber-500);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav-icon {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .nav-icon svg { width: 15px; height: 15px; }
+
+  .nav-label { font-size: 13px; font-family: var(--font-ui); }
+
+  .nav-badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--bg-overlay);
+    color: var(--text-muted);
+    border-radius: var(--radius-full);
+    padding: 1px 6px;
+  }
+
+  .sidebar-section-header {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: var(--space-2) var(--space-3);
+    margin-top: var(--space-2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-divider { height: 1px; background: var(--border-subtle); margin: var(--space-2) 0; }
+
+  .collapsed-icon-btn {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    font-size: 16px;
+  }
+
+  .collapsed-icon-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
+  .collapsed-icon-btn.active { color: var(--amber-400); background: rgba(245,158,11,0.08); }
+
+  /* ── COMPONENT: Content Canvas ── */
+  .canvas {
+    flex: 1;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-10);
+    font-family: var(--font-body);
+  }
+
+  .canvas-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: var(--space-5);
+    line-height: 1.3;
+  }
+
+  .canvas-body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--text-secondary);
+  }
+
+  /* ── Concept highlights ── */
+  .concept {
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0 2px;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+
+  /* Unknown concept (needs expansion) */
+  .concept-unknown {
+    color: var(--amber-400);
+    background: rgba(245,158,11,0.08);
+    border-bottom: 1px dashed rgba(245,158,11,0.4);
+  }
+
+  .concept-unknown:hover { background: rgba(245,158,11,0.15); }
+
+  /* Prerequisite (deeper dependency) */
+  .concept-prereq {
+    color: var(--violet-400);
+    background: rgba(139,92,246,0.08);
+    border-bottom: 1px dashed rgba(139,92,246,0.4);
+  }
+
+  .concept-prereq:hover { background: rgba(139,92,246,0.15); }
+
+  /* Mastered concept */
+  .concept-known {
+    color: var(--emerald-400);
+    background: rgba(16,185,129,0.06);
+    border-bottom: 1px solid rgba(16,185,129,0.3);
+    cursor: default;
+  }
+
+  /* Active/expanded */
+  .concept-active {
+    color: var(--text-primary);
+    background: rgba(245,158,11,0.2);
+    border-bottom: 1px solid var(--amber-500);
+  }
+
+  /* ── COMPONENT: Concept Tooltip ── */
+  .tooltip-wrapper { position: relative; display: inline-block; }
+
+  .concept-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background: var(--bg-overlay);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-tooltip);
+    z-index: 100;
+  }
+
+  .tooltip-arrow {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 9px; height: 9px;
+    background: var(--bg-overlay);
+    border-right: 1px solid var(--border-default);
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  .tooltip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+
+  .tooltip-concept-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .tooltip-depth-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: rgba(245,158,11,0.1);
+    color: var(--amber-400);
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+
+  .tooltip-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .tooltip-prereqs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+  }
+
+  .prereq-chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 12px;
+    color: var(--violet-400);
+    font-family: var(--font-mono);
+    padding: var(--space-1) var(--space-2);
+    background: rgba(139,92,246,0.06);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(139,92,246,0.12);
+    cursor: pointer;
+    transition: background var(--dur-fast);
+  }
+
+  .prereq-chip:hover { background: rgba(139,92,246,0.12); }
+
+  .tooltip-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary {
+    background: var(--amber-500);
+    color: var(--bg-void);
+  }
+  .btn-primary:hover { background: var(--amber-400); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-default);
+  }
+  .btn-ghost:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+  .btn-violet {
+    background: rgba(139,92,246,0.15);
+    color: var(--violet-400);
+    border: 1px solid rgba(139,92,246,0.2);
+  }
+  .btn-violet:hover { background: rgba(139,92,246,0.25); }
+
+  .btn-sm { font-size: 11px; padding: 4px 10px; }
+
+  /* ── COMPONENT: Prerequisite Tree ── */
+  .prereq-tree {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    min-width: 260px;
+  }
+
+  .tree-header {
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tree-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .tree-title-icon { color: var(--violet-400); font-size: 14px; }
+
+  .tree-body { padding: var(--space-3) var(--space-3); }
+
+  .tree-node {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    position: relative;
+    font-size: 12px;
+    font-family: var(--font-ui);
+    color: var(--text-secondary);
+    transition: background var(--dur-fast);
+  }
+
+  .tree-node:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+  .tree-node.level-0 { color: var(--text-primary); font-weight: 500; }
+  .tree-node.level-1 { padding-left: 20px; color: var(--violet-400); }
+  .tree-node.level-2 { padding-left: 36px; color: var(--text-muted); }
+  .tree-node.level-3 { padding-left: 52px; color: var(--text-muted); font-size: 11px; }
+
+  .tree-connector {
+    position: absolute;
+    left: 12px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border-subtle);
+  }
+
+  .node-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .node-dot.unknown { background: var(--amber-500); }
+  .node-dot.prereq  { background: var(--violet-500); }
+  .node-dot.known   { background: var(--emerald-500); }
+  .node-dot.explore { background: var(--blue-500); }
+
+  /* ── COMPONENT: Knowledge Card ── */
+  .knowledge-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    transition: border-color var(--dur-base) var(--ease-out);
+    cursor: pointer;
+  }
+
+  .knowledge-card:hover { border-color: rgba(245,158,11,0.3); }
+
+  .card-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .card-type-prereq { color: var(--violet-400); }
+  .card-type-explore { color: var(--blue-400); }
+  .card-type-known { color: var(--emerald-400); }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    line-height: 1.3;
+  }
+
+  .card-snippet {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+  }
+
+  .card-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-default);
+    color: var(--text-muted);
+    background: var(--bg-surface);
+  }
+
+  /* ── COMPONENT: Onboarding Tiles ── */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  .tile {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    cursor: pointer;
+    transition: all var(--dur-base) var(--ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tile:hover {
+    border-color: rgba(245,158,11,0.25);
+    background: var(--bg-overlay);
+  }
+
+  .tile.selected {
+    border-color: var(--amber-500);
+    background: rgba(245,158,11,0.04);
+  }
+
+  .tile.selected::after {
+    content: '✓';
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 20px; height: 20px;
+    background: var(--amber-500);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: var(--bg-void);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tile-illustration {
+    width: 48px; height: 48px;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .tile-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+    font-family: var(--font-ui);
+  }
+
+  .tile-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-family: var(--font-ui);
+  }
+
+  /* ── COMPONENT: Right Panel (Settings) ── */
+  .settings-panel {
+    width: 260px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .panel-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .panel-label {
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    font-size: 13px;
+  }
+
+  .panel-value {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .toggle {
+    width: 36px; height: 20px;
+    border-radius: var(--radius-full);
+    background: var(--amber-500);
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: all var(--dur-fast);
+  }
+
+  .toggle.off { background: var(--bg-elevated); border: 1px solid var(--border-default); }
+  .toggle.off::after { right: auto; left: 2px; }
+
+  .panel-divider { height: 1px; background: var(--border-subtle); }
+
+  .panel-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  /* ── COMPONENT: Video Annotation ── */
+  .transcript-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+
+  .transcript-header {
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--bg-elevated);
+  }
+
+  .timestamp-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    background: var(--bg-overlay);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .transcript-line {
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    transition: background var(--dur-fast);
+  }
+
+  .transcript-line:hover { background: var(--bg-elevated); }
+  .transcript-line.active { background: rgba(245,158,11,0.04); }
+
+  .transcript-text { flex: 1; }
+
+  .alert-prereq {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--violet-400);
+    background: rgba(139,92,246,0.08);
+    border: 1px solid rgba(139,92,246,0.15);
+    border-radius: var(--radius-md);
+    padding: 3px 8px;
+    margin-top: var(--space-2);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ── COMPONENT: Graph Node ── */
+  .graph-area {
+    background: var(--bg-void);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .graph-node {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    cursor: pointer;
+  }
+
+  .graph-node-circle {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    transition: transform var(--dur-fast) var(--ease-out);
+    border: 2px solid transparent;
+  }
+
+  .graph-node-circle:hover { transform: scale(1.1); }
+
+  .gnc-root {
+    width: 72px; height: 72px;
+    background: rgba(245,158,11,0.15);
+    border-color: var(--amber-500);
+    color: var(--amber-400);
+    font-size: 11px;
+  }
+
+  .gnc-prereq {
+    width: 54px; height: 54px;
+    background: rgba(139,92,246,0.12);
+    border-color: var(--violet-500);
+    color: var(--violet-400);
+    font-size: 10px;
+  }
+
+  .gnc-deep {
+    width: 42px; height: 42px;
+    background: rgba(75,85,99,0.2);
+    border-color: rgba(255,255,255,0.1);
+    color: var(--text-muted);
+    font-size: 10px;
+  }
+
+  .gnc-known {
+    width: 54px; height: 54px;
+    background: rgba(16,185,129,0.1);
+    border-color: var(--emerald-500);
+    color: var(--emerald-400);
+    font-size: 10px;
+  }
+
+  .graph-node-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.3;
+  }
+
+  /* ── COMPONENT: Bottom Action Bar ── */
+  .action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+  }
+
+  .action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background var(--dur-fast);
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: none;
+    background: transparent;
+  }
+
+  .action-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
+  .action-btn-icon { font-size: 14px; }
+
+  /* ── COMPONENT: Upload State ── */
+  .upload-zone {
+    border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius-xl);
+    padding: var(--space-12) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    transition: all var(--dur-base) var(--ease-out);
+    background: transparent;
+  }
+
+  .upload-zone:hover {
+    border-color: rgba(245,158,11,0.4);
+    background: rgba(245,158,11,0.03);
+  }
+
+  .upload-icon { font-size: 32px; color: var(--text-muted); }
+  .upload-title { font-size: 15px; color: var(--text-primary); font-weight: 500; font-family: var(--font-ui); }
+  .upload-sub { font-size: 13px; color: var(--text-muted); font-family: var(--font-ui); }
+  .upload-types { display: flex; gap: var(--space-2); margin-top: var(--space-1); }
+  .upload-type-chip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-muted);
+  }
+
+  /* ── COMPONENT: Empty State ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-12) var(--space-8);
+    text-align: center;
+  }
+
+  .empty-icon {
+    width: 56px; height: 56px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-2xl);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    color: var(--text-muted);
+  }
+
+  .empty-title { font-size: 16px; color: var(--text-primary); font-weight: 500; font-family: var(--font-display); font-style: italic; }
+  .empty-desc { font-size: 13px; color: var(--text-muted); max-width: 300px; line-height: 1.6; }
+
+  /* ── COMPONENT: Progress / Mastery Bar ── */
+  .mastery-bar-wrap {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-full);
+    height: 6px;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .mastery-bar-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--emerald-600), var(--emerald-400));
+  }
+
+  /* ── Utility ── */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .gap-2 { gap: var(--space-2); }
+  .gap-3 { gap: var(--space-3); }
+  .gap-4 { gap: var(--space-4); }
+  .gap-6 { gap: var(--space-6); }
+  .items-center { align-items: center; }
+  .items-start { align-items: flex-start; }
+  .justify-between { justify-content: space-between; }
+  .w-full { width: 100%; }
+  .flex-1 { flex: 1; }
+  .mt-3 { margin-top: var(--space-3); }
+  .mt-4 { margin-top: var(--space-4); }
+  .mt-6 { margin-top: var(--space-6); }
+  .mb-3 { margin-bottom: var(--space-3); }
+  .mb-4 { margin-bottom: var(--space-4); }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--bg-void);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  .code-key   { color: var(--violet-400); }
+  .code-val   { color: var(--amber-400); }
+  .code-str   { color: var(--emerald-400); }
+  .code-comment { color: var(--text-muted); }
+
+  /* ── Grid for tokens / components ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
+
+  /* ── GRAPH SVG placeholder ── */
+  .graph-svg-area {
+    width: 100%;
+    background: var(--bg-void);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+
+<div class="doc">
+
+  <!-- ── HEADER ── -->
+  <div class="doc-header">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      RabbitHole
+      <span class="version-badge">DS v1.0</span>
+    </div>
+    <div class="doc-meta">Recursive Learning OS · Design System Reference · April 2025</div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 01: COLOR -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">01 — Color</div>
+    <div class="section-title">The Palette</div>
+    <div class="section-desc">Built for deep focus in dark environments. Amber is the primary brand signal — a torch in the rabbit hole. Violet marks depth and prerequisite relationships. Emerald confirms mastery.</div>
+
+    <div style="margin-bottom: var(--space-5);">
+      <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-3); text-transform: uppercase; letter-spacing: 0.08em;">Backgrounds</p>
+      <div class="token-grid">
+        <div class="token-card">
+          <div class="token-swatch" style="background:#06060A;"></div>
+          <div class="token-info"><span class="token-name">--bg-void</span><span class="token-value">#06060A</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#0D0D12;"></div>
+          <div class="token-info"><span class="token-name">--bg-canvas</span><span class="token-value">#0D0D12</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#141418;"></div>
+          <div class="token-info"><span class="token-name">--bg-surface</span><span class="token-value">#141418</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#1C1C23;"></div>
+          <div class="token-info"><span class="token-name">--bg-elevated</span><span class="token-value">#1C1C23</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#22222C;"></div>
+          <div class="token-info"><span class="token-name">--bg-overlay</span><span class="token-value">#22222C</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: var(--space-5);">
+      <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-3); text-transform: uppercase; letter-spacing: 0.08em;">Brand Semantic Colors</p>
+      <div class="token-grid">
+        <div class="token-card">
+          <div class="token-swatch" style="background:linear-gradient(135deg, #F59E0B, #D97706);"></div>
+          <div class="token-info"><span class="token-name">Amber — Torch</span><span class="token-value">Concept expansion</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:linear-gradient(135deg, #8B5CF6, #7C3AED);"></div>
+          <div class="token-info"><span class="token-name">Violet — Depth</span><span class="token-value">Prerequisites</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:linear-gradient(135deg, #10B981, #059669);"></div>
+          <div class="token-info"><span class="token-name">Emerald — Known</span><span class="token-value">Mastered concepts</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:linear-gradient(135deg, #3B82F6, #2563EB);"></div>
+          <div class="token-info"><span class="token-name">Blue — Navigate</span><span class="token-value">Exploration path</span></div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:linear-gradient(135deg, #F5F4F0, #9B9A95);"></div>
+          <div class="token-info"><span class="token-name">Text — Primary/Secondary</span><span class="token-value">Warm off-white</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concept highlight legend -->
+    <div class="component-block">
+      <div class="component-label">Concept Highlight States</div>
+      <div style="font-family: var(--font-body); font-size: 15px; line-height: 2; color: var(--text-secondary);">
+        In <span class="concept concept-unknown">backpropagation</span> the error signal flows backward through each layer using the <span class="concept concept-prereq">chain rule</span> of calculus. Neural networks can learn to represent <span class="concept concept-known">linear functions</span> trivially, but the real power lies in <span class="concept concept-active">non-linear activation functions</span> like ReLU.
+      </div>
+      <div style="display:flex; gap: var(--space-4); margin-top: var(--space-4); flex-wrap:wrap;">
+        <span style="font-size:12px; font-family:var(--font-mono); color:var(--amber-400);">● Unknown concept</span>
+        <span style="font-size:12px; font-family:var(--font-mono); color:var(--violet-400);">● Prerequisite</span>
+        <span style="font-size:12px; font-family:var(--font-mono); color:var(--emerald-400);">● Mastered</span>
+        <span style="font-size:12px; font-family:var(--font-mono); color:var(--text-primary);">● Active (expanded)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 02: TYPOGRAPHY -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">02 — Typography</div>
+    <div class="section-title">Type System</div>
+    <div class="section-desc">Three typeface roles: Playfair Display for editorial gravity, Lora for long-form reading, JetBrains Mono for concept labels and data. DM Sans handles UI chrome.</div>
+
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-meta-label">Display / Logo</span>
+          <span class="type-meta-value">Playfair Display</span>
+          <span class="type-meta-value" style="margin-top:4px;">36–48px · 400/600</span>
+        </div>
+        <div style="font-family:var(--font-display); font-size: 40px; font-weight:400; color:var(--text-primary); letter-spacing:-0.02em; line-height:1;">RabbitHole</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-meta-label">Section Heading</span>
+          <span class="type-meta-value">Playfair Display</span>
+          <span class="type-meta-value" style="margin-top:4px;">24–28px · 400</span>
+        </div>
+        <div style="font-family:var(--font-display); font-size: 26px; font-weight:400; color:var(--text-primary); letter-spacing:-0.01em;">Neural Networks &amp; Deep Learning</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-meta-label">Document Body</span>
+          <span class="type-meta-value">Lora · serif</span>
+          <span class="type-meta-value" style="margin-top:4px;">15px · 400 · 1.85lh</span>
+        </div>
+        <div style="font-family:var(--font-body); font-size:15px; line-height:1.85; color:var(--text-secondary); max-width:480px;">A neural network is a computational model loosely inspired by the structure of biological brains. It consists of layers of interconnected nodes that transform input data through a series of mathematical operations.</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-meta-label">UI Chrome</span>
+          <span class="type-meta-value">DM Sans</span>
+          <span class="type-meta-value" style="margin-top:4px;">12–14px · 300–500</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <span style="font-family:var(--font-ui); font-size:14px; font-weight:500; color:var(--text-primary);">Navigation Label</span>
+          <span style="font-family:var(--font-ui); font-size:13px; color:var(--text-secondary);">Supporting description text</span>
+          <span style="font-family:var(--font-ui); font-size:12px; color:var(--text-muted);">Caption / metadata</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-meta-label">Concept Labels</span>
+          <span class="type-meta-value">JetBrains Mono</span>
+          <span class="type-meta-value" style="margin-top:4px;">10–13px · 400/500</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <span style="font-family:var(--font-mono); font-size:13px; color:var(--amber-400);">backpropagation</span>
+          <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase;">SECTION LABEL · 01</span>
+          <span style="font-family:var(--font-mono); font-size:11px; color:var(--violet-400);">→ requires: chain_rule</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 03: TOP BAR + BREADCRUMB -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">03 — Navigation</div>
+    <div class="section-title">Top Bar &amp; Breadcrumb</div>
+    <div class="section-desc">Notion-style breadcrumb: plain text segments separated by "›", no background, no pill. Current page is slightly brighter. All segments are clickable with underline-on-hover.</div>
+
+    <div class="component-block" style="padding: 0; overflow:hidden;">
+      <div class="topbar">
+        <div class="topbar-logo">
+          <span style="width:8px;height:8px;background:var(--amber-500);border-radius:50%;display:inline-block;"></span>
+          RH
+        </div>
+        <div class="topbar-breadcrumb">
+          <span class="breadcrumb-segment">Library</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-segment">Machine Learning</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-segment">Neural Networks</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-segment active">Backpropagation</span>
+        </div>
+        <div class="topbar-actions">
+          <div class="view-toggle">
+            <button class="view-btn active">Read</button>
+            <button class="view-btn">Graph</button>
+            <button class="view-btn">Video</button>
+          </div>
+          <div class="avatar">FO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breadcrumb rules -->
+    <div class="code-block mt-4">
+<span class="code-comment">/* Breadcrumb — Notion style */</span>
+<span class="code-key">separator</span>: <span class="code-str">"›"</span>  <span class="code-comment">// plain text, no icon</span>
+<span class="code-key">active segment</span>: <span class="code-val">font-weight 500</span>, <span class="code-val">color text-primary</span>
+<span class="code-key">inactive segment</span>: <span class="code-val">color text-secondary</span>, <span class="code-val">hover: underline + text-primary</span>
+<span class="code-key">no background</span>: breadcrumb is inline text only, no pill or box
+<span class="code-key">overflow</span>: collapse middle segments with <span class="code-str">…</span> on narrow viewports
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 04: SIDEBAR -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">04 — Sidebar Navigation</div>
+    <div class="section-title">Collapsible Sidebar</div>
+    <div class="section-desc">Three states: expanded (240px), icon-only (56px), and hidden. Active item uses amber accent with a 2px left border indicator. Collapses to icon-only on narrow viewports.</div>
+
+    <div class="component-block">
+      <div class="sidebar-demo">
+        <!-- Expanded -->
+        <div class="sidebar">
+          <div class="nav-item active">
+            <div class="nav-icon">📚</div>
+            <span class="nav-label">Library</span>
+          </div>
+          <div class="nav-item">
+            <div class="nav-icon">🔍</div>
+            <span class="nav-label">Explore</span>
+          </div>
+          <div class="nav-item">
+            <div class="nav-icon">🕸</div>
+            <span class="nav-label">Graph</span>
+          </div>
+          <div class="nav-item">
+            <div class="nav-icon">📹</div>
+            <span class="nav-label">Videos</span>
+            <span class="nav-badge">3</span>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="sidebar-section-header">
+            <span>Progress</span>
+          </div>
+          <div class="nav-item">
+            <div class="nav-icon">⚡</div>
+            <span class="nav-label">Mastered</span>
+            <span class="nav-badge">42</span>
+          </div>
+          <div class="nav-item">
+            <div class="nav-icon">🕳</div>
+            <span class="nav-label">Gaps</span>
+            <span class="nav-badge">8</span>
+          </div>
+        </div>
+
+        <!-- Collapsed (icon-only) -->
+        <div class="sidebar-collapsed">
+          <div class="collapsed-icon-btn active" title="Library">📚</div>
+          <div class="collapsed-icon-btn" title="Explore">🔍</div>
+          <div class="collapsed-icon-btn" title="Graph">🕸</div>
+          <div class="collapsed-icon-btn" title="Videos">📹</div>
+          <div style="height:1px; width:32px; background:var(--border-subtle); margin: var(--space-2) 0;"></div>
+          <div class="collapsed-icon-btn" title="Mastered">⚡</div>
+          <div class="collapsed-icon-btn" title="Gaps">🕳</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 05: CONTENT CANVAS + TOOLTIP -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">05 — Content Canvas</div>
+    <div class="section-title">Reading Surface &amp; Concept Tooltip</div>
+    <div class="section-desc">The reading canvas uses Lora at 15px/1.85 leading. Highlighted concepts trigger a tooltip with quick explanation, prerequisite links, and expansion CTA. The tooltip sits above the word, never below.</div>
+
+    <div class="component-block">
+      <div class="canvas" style="padding: var(--space-6);">
+        <div class="canvas-title">Introduction to Backpropagation</div>
+        <div class="canvas-body">
+          <span class="concept concept-unknown" style="position:relative;">backpropagation
+            <!-- Tooltip preview -->
+            <span class="concept-tooltip" style="position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); z-index:10;">
+              <span class="tooltip-arrow"></span>
+              <div class="tooltip-header">
+                <span class="tooltip-concept-name">Backpropagation</span>
+                <span class="tooltip-depth-badge">3 levels deep</span>
+              </div>
+              <div class="tooltip-body">An algorithm for efficiently computing gradients in neural networks by applying the chain rule from output to input layers.</div>
+              <div class="tooltip-prereqs">
+                <span class="prereq-chip">→ Chain Rule</span>
+                <span class="prereq-chip">→ Gradient Descent</span>
+                <span class="prereq-chip">→ Partial Derivatives</span>
+              </div>
+              <div class="tooltip-actions">
+                <button class="btn btn-primary btn-sm">Expand concept</button>
+                <button class="btn btn-ghost btn-sm">Skip</button>
+              </div>
+            </span>
+          </span> is the foundational algorithm for training deep neural networks. It works by calculating how much each weight in the network contributed to the final error, using the <span class="concept concept-prereq">chain rule</span> of calculus. This allows us to efficiently update every weight in a <span class="concept concept-known">multilayer network</span> in a single backward pass.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 06: PREREQUISITE TREE -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">06 — Knowledge Components</div>
+    <div class="section-title">Prerequisite Tree &amp; Knowledge Graph</div>
+    <div class="section-desc">The right panel shows the concept dependency tree. Color codes: amber for focal concept, violet for direct prerequisites, muted gray for deep dependencies, emerald for already-mastered nodes.</div>
+
+    <div class="two-col">
+      <!-- Tree -->
+      <div class="prereq-tree">
+        <div class="tree-header">
+          <div class="tree-title">
+            <span class="tree-title-icon">🕳</span>
+            Prerequisite Tree
+          </div>
+          <button class="btn btn-ghost btn-sm">Collapse</button>
+        </div>
+        <div class="tree-body">
+          <div class="tree-node level-0">
+            <div class="node-dot unknown"></div>
+            Backpropagation
+          </div>
+          <div class="tree-node level-1">
+            <div class="node-dot prereq"></div>
+            Chain Rule
+          </div>
+          <div class="tree-node level-2">
+            <div class="node-dot prereq"></div>
+            Partial Derivatives
+          </div>
+          <div class="tree-node level-3">
+            <div class="node-dot known"></div>
+            Differentiation ✓
+          </div>
+          <div class="tree-node level-1">
+            <div class="node-dot prereq"></div>
+            Gradient Descent
+          </div>
+          <div class="tree-node level-2">
+            <div class="node-dot prereq"></div>
+            Loss Functions
+          </div>
+          <div class="tree-node level-2">
+            <div class="node-dot known"></div>
+            Linear Algebra ✓
+          </div>
+          <div class="tree-node level-1">
+            <div class="node-dot known"></div>
+            Matrix Multiplication ✓
+          </div>
+        </div>
+      </div>
+
+      <!-- Graph visualization -->
+      <div>
+        <div class="graph-svg-area" style="height:280px; display:flex; align-items:center; justify-content:center; padding: var(--space-4);">
+          <svg width="100%" height="240" viewBox="0 0 320 240">
+            <!-- Edges -->
+            <line x1="160" y1="60" x2="80" y2="140" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+            <line x1="160" y1="60" x2="240" y2="140" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+            <line x1="80" y1="140" x2="40" y2="210" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="80" y1="140" x2="120" y2="210" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="240" y1="140" x2="210" y2="210" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+            <line x1="240" y1="140" x2="270" y2="210" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <!-- Root node -->
+            <circle cx="160" cy="60" r="32" fill="rgba(245,158,11,0.15)" stroke="#F59E0B" stroke-width="1.5"/>
+            <text x="160" y="56" text-anchor="middle" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="9">Back-</text>
+            <text x="160" y="68" text-anchor="middle" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="9">prop</text>
+            <!-- Level 1 -->
+            <circle cx="80" cy="140" r="24" fill="rgba(139,92,246,0.12)" stroke="#8B5CF6" stroke-width="1.5"/>
+            <text x="80" y="136" text-anchor="middle" fill="#A78BFA" font-family="JetBrains Mono,monospace" font-size="8">Chain</text>
+            <text x="80" y="147" text-anchor="middle" fill="#A78BFA" font-family="JetBrains Mono,monospace" font-size="8">Rule</text>
+            <circle cx="240" cy="140" r="24" fill="rgba(16,185,129,0.1)" stroke="#10B981" stroke-width="1.5"/>
+            <text x="240" y="136" text-anchor="middle" fill="#34D399" font-family="JetBrains Mono,monospace" font-size="8">Grad.</text>
+            <text x="240" y="147" text-anchor="middle" fill="#34D399" font-family="JetBrains Mono,monospace" font-size="8">Descent</text>
+            <!-- Level 2 -->
+            <circle cx="40" cy="210" r="16" fill="rgba(75,85,99,0.2)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="40" y="214" text-anchor="middle" fill="#4E4D4A" font-family="JetBrains Mono,monospace" font-size="7.5">∂</text>
+            <circle cx="120" cy="210" r="16" fill="rgba(75,85,99,0.2)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="120" y="214" text-anchor="middle" fill="#4E4D4A" font-family="JetBrains Mono,monospace" font-size="7">Limits</text>
+            <circle cx="210" cy="210" r="16" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+            <text x="210" y="214" text-anchor="middle" fill="#10B981" font-family="JetBrains Mono,monospace" font-size="6.5">Loss Fn</text>
+            <circle cx="270" cy="210" r="16" fill="rgba(75,85,99,0.2)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="270" y="214" text-anchor="middle" fill="#4E4D4A" font-family="JetBrains Mono,monospace" font-size="7">LinAlg</text>
+          </svg>
+        </div>
+        <!-- Legend -->
+        <div style="display:flex; gap:var(--space-4); margin-top:var(--space-3); padding: 0 var(--space-2);">
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--amber-400); display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber-500);display:inline-block;"></span>Focal</span>
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--violet-400); display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--violet-500);display:inline-block;"></span>Prereq</span>
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--emerald-400); display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--emerald-500);display:inline-block;"></span>Known</span>
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#374151;display:inline-block;"></span>Deep</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 07: BUTTONS -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">07 — Buttons &amp; Actions</div>
+    <div class="section-title">Interactive Controls</div>
+
+    <div class="component-block">
+      <div class="flex gap-3 items-center" style="flex-wrap:wrap;">
+        <button class="btn btn-primary">Expand concept</button>
+        <button class="btn btn-ghost">Skip</button>
+        <button class="btn btn-violet">Go deeper →</button>
+        <button class="btn btn-primary btn-sm">Add to path</button>
+        <button class="btn btn-ghost btn-sm">Dismiss</button>
+      </div>
+    </div>
+
+    <!-- Action bar -->
+    <div class="flex justify-between items-center mt-4">
+      <div class="action-bar">
+        <button class="action-btn"><span class="action-btn-icon">📤</span>Share</button>
+        <button class="action-btn"><span class="action-btn-icon">📋</span>Copy</button>
+        <button class="action-btn"><span class="action-btn-icon">🔄</span>Re-analyse</button>
+        <button class="action-btn"><span class="action-btn-icon">💾</span>Export</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 08: ONBOARDING TILES -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">08 — Onboarding</div>
+    <div class="section-title">Content Category Tiles</div>
+    <div class="section-desc">2×2 grid shown on first launch. User selects their learning focus. Selected tile gets amber border + check. Follows Writer.ai's tile pattern, adapted for dark mode and RabbitHole's brand.</div>
+
+    <div class="component-block">
+      <div style="max-width: 460px; margin: 0 auto;">
+        <div style="text-align:center; margin-bottom:var(--space-6);">
+          <div style="font-family:var(--font-display); font-size:22px; color:var(--text-primary); margin-bottom:var(--space-2);">What will you explore today?</div>
+          <div style="font-size:13px; color:var(--text-muted);">You can always change this later.</div>
+        </div>
+        <div class="tile-grid">
+          <div class="tile selected">
+            <div class="tile-illustration" style="background:rgba(245,158,11,0.1);">📘</div>
+            <div class="tile-title">Textbooks &amp; PDFs</div>
+            <div class="tile-desc">Upload dense academic content for deep concept mapping.</div>
+          </div>
+          <div class="tile">
+            <div class="tile-illustration" style="background:rgba(59,130,246,0.1);">🎬</div>
+            <div class="tile-title">Video Lectures</div>
+            <div class="tile-desc">Annotate YouTube or lecture transcripts with concept expansion.</div>
+          </div>
+          <div class="tile">
+            <div class="tile-illustration" style="background:rgba(139,92,246,0.1);">📝</div>
+            <div class="tile-title">Notes &amp; Articles</div>
+            <div class="tile-desc">Paste or write — we'll build the knowledge graph from scratch.</div>
+          </div>
+          <div class="tile">
+            <div class="tile-illustration" style="background:rgba(16,185,129,0.1);">🔗</div>
+            <div class="tile-title">Web Links</div>
+            <div class="tile-desc">Drop a URL. We extract, clean, and map the content automatically.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 09: SETTINGS PANEL -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">09 — Settings Panel</div>
+    <div class="section-title">Right Rail</div>
+    <div class="section-desc">Inspired by Writer.ai's right panel. Floats on the right of the canvas. Houses LLM model selector, feature toggles, and source attachments. 260px wide at rest.</div>
+
+    <div class="component-block">
+      <div style="display:flex; justify-content:center;">
+        <div class="settings-panel">
+          <div>
+            <div class="panel-title">Model</div>
+            <div class="panel-row">
+              <span class="panel-label">Claude Sonnet</span>
+              <span class="panel-value">Active ▾</span>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div>
+            <div class="panel-title">Context window</div>
+            <div class="panel-row">
+              <span class="panel-label">200k tokens</span>
+              <span class="panel-value">82% used</span>
+            </div>
+            <div style="margin-top:var(--space-2);">
+              <div class="mastery-bar-wrap">
+                <div class="mastery-bar-fill" style="width:82%; background:linear-gradient(90deg, var(--amber-600), var(--amber-400));"></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div>
+            <div class="panel-title">Features</div>
+            <div class="flex flex-col gap-3">
+              <div class="panel-row">
+                <span class="panel-label">Auto-detect concepts</span>
+                <div class="toggle"></div>
+              </div>
+              <div class="panel-row">
+                <span class="panel-label">Prereq alerts</span>
+                <div class="toggle"></div>
+              </div>
+              <div class="panel-row">
+                <span class="panel-label">Video sync</span>
+                <div class="toggle off"></div>
+              </div>
+              <div class="panel-row">
+                <span class="panel-label">Graph auto-layout</span>
+                <div class="toggle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div>
+            <div class="panel-title">Sources (3/5)</div>
+            <div class="flex flex-col gap-2">
+              <div style="display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:var(--text-secondary);">
+                <span style="font-size:14px;">📄</span>
+                <span style="flex:1;font-family:var(--font-ui);">deep_learning_goodfellow.pdf</span>
+                <span style="color:var(--text-muted);">4.2mb</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:var(--text-secondary);">
+                <span style="font-size:14px;">🎬</span>
+                <span style="flex:1;font-family:var(--font-ui);">3blue1brown_backprop</span>
+                <span style="color:var(--text-muted);">YT</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--space-2);font-size:12px;color:var(--text-secondary);">
+                <span style="font-size:14px;">🔗</span>
+                <span style="flex:1;font-family:var(--font-ui);">colah.github.io/backprop</span>
+                <span style="color:var(--text-muted);">Link</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 10: VIDEO TRANSCRIPT -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">10 — Video Mode</div>
+    <div class="section-title">Transcript Annotation</div>
+    <div class="section-desc">Transcript displays timestamped lines. Concepts are highlighted inline. Prerequisite alerts appear below a line when the speaker assumes knowledge the user hasn't unlocked yet.</div>
+
+    <div class="component-block" style="padding:0; overflow:hidden;">
+      <div class="transcript-block" style="border:none; border-radius:0;">
+        <div class="transcript-header">
+          <div style="width:8px;height:8px;background:#EF4444;border-radius:50%;"></div>
+          <span style="font-size:13px;font-family:var(--font-ui);color:var(--text-primary);">3Blue1Brown — Backpropagation</span>
+          <span class="timestamp-badge" style="margin-left:auto;">12:34 / 38:20</span>
+        </div>
+        <div class="transcript-line">
+          <span class="timestamp-badge">12:34</span>
+          <span class="transcript-text">Now if we apply the <span class="concept concept-prereq">chain rule</span> here, we can express the gradient with respect to each weight in the network...</span>
+        </div>
+        <div class="transcript-line active">
+          <span class="timestamp-badge">12:47</span>
+          <div class="transcript-text">
+            The <span class="concept concept-unknown">Jacobian matrix</span> allows us to capture all these partial derivative relationships simultaneously.
+            <div style="margin-top:var(--space-2);">
+              <span class="alert-prereq">⚠ Assumes you know: matrix calculus → expand</span>
+            </div>
+          </div>
+        </div>
+        <div class="transcript-line">
+          <span class="timestamp-badge">13:10</span>
+          <span class="transcript-text">This is why <span class="concept concept-known">matrix multiplication</span> is so central to the backpropagation algorithm — each layer is just a linear transformation.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 11: KNOWLEDGE CARDS + PROGRESS -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">11 — Cards &amp; Progress</div>
+    <div class="section-title">Knowledge Cards &amp; Mastery</div>
+
+    <div class="two-col mb-4">
+      <div class="knowledge-card">
+        <div class="card-type card-type-prereq">⬡ Prerequisite</div>
+        <div class="card-title">Chain Rule</div>
+        <div class="card-snippet">A formula for computing the derivative of composite functions. Required to understand how gradients flow backwards through a network.</div>
+        <div class="card-tags">
+          <span class="tag">calculus</span>
+          <span class="tag">derivatives</span>
+          <span class="tag">depth: 2</span>
+        </div>
+      </div>
+      <div class="knowledge-card">
+        <div class="card-type card-type-known">✓ Mastered</div>
+        <div class="card-title">Matrix Multiplication</div>
+        <div class="card-snippet">The core linear algebra operation underlying all neural network forward and backward passes. You already know this.</div>
+        <div class="card-tags">
+          <span class="tag">linear-algebra</span>
+          <span class="tag">linalg</span>
+          <span class="tag">done</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mastery progress -->
+    <div class="component-block">
+      <div class="component-label">Learning Path Progress</div>
+      <div class="flex flex-col gap-4">
+        <div>
+          <div class="flex justify-between mb-3" style="font-size:13px;">
+            <span style="color:var(--text-primary); font-family:var(--font-ui);">Neural Networks fundamentals</span>
+            <span style="color:var(--emerald-400); font-family:var(--font-mono); font-size:12px;">68%</span>
+          </div>
+          <div class="mastery-bar-wrap"><div class="mastery-bar-fill" style="width:68%;"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-3" style="font-size:13px;">
+            <span style="color:var(--text-primary); font-family:var(--font-ui);">Calculus prerequisites</span>
+            <span style="color:var(--amber-400); font-family:var(--font-mono); font-size:12px;">34%</span>
+          </div>
+          <div class="mastery-bar-wrap"><div class="mastery-bar-fill" style="width:34%; background:linear-gradient(90deg, var(--amber-800), var(--amber-400));"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-3" style="font-size:13px;">
+            <span style="color:var(--text-primary); font-family:var(--font-ui);">Linear Algebra</span>
+            <span style="color:var(--emerald-400); font-family:var(--font-mono); font-size:12px;">91%</span>
+          </div>
+          <div class="mastery-bar-wrap"><div class="mastery-bar-fill" style="width:91%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 12: EMPTY + UPLOAD STATES -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">12 — States</div>
+    <div class="section-title">Empty &amp; Upload States</div>
+
+    <div class="two-col">
+      <div class="component-block" style="padding:0; overflow:hidden;">
+        <div class="empty-state">
+          <div class="empty-icon">🕳</div>
+          <div class="empty-title">Your document awaits.</div>
+          <div class="empty-desc">Upload a PDF, paste text, or drop a YouTube link to start mapping your knowledge.</div>
+          <button class="btn btn-primary" style="margin-top:var(--space-3);">Get started</button>
+        </div>
+      </div>
+      <div class="component-block">
+        <div class="upload-zone">
+          <div class="upload-icon">↑</div>
+          <div class="upload-title">Drop your content here</div>
+          <div class="upload-sub">or click to browse files</div>
+          <div class="upload-types">
+            <span class="upload-type-chip">PDF</span>
+            <span class="upload-type-chip">TXT</span>
+            <span class="upload-type-chip">DOCX</span>
+            <span class="upload-type-chip">YouTube</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 13: SPACING + LAYOUT SPEC -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">13 — Layout</div>
+    <div class="section-title">Spatial System &amp; Layout Rules</div>
+    <div class="section-desc">Four-column layout at full width. Columns collapse progressively. Everything aligns to an 8px base grid. The right panel is dismissible and floats over content on &lt;1200px screens.</div>
+
+    <div class="code-block">
+<span class="code-comment">/* Main layout — three pane */</span>
+<span class="code-key">.app-shell</span> {
+  <span class="code-val">display</span>: grid;
+  <span class="code-val">grid-template-columns</span>: <span class="code-str">var(--sidebar-expanded) 1fr var(--right-panel)</span>;
+  <span class="code-val">grid-template-rows</span>: <span class="code-str">var(--topbar-height) 1fr</span>;
+  <span class="code-val">height</span>: 100vh;
+}
+
+<span class="code-comment">/* Breakpoints */</span>
+@media (max-width: 1200px) { <span class="code-val">right panel overlays</span> }
+@media (max-width: 900px)  { <span class="code-val">sidebar collapses to icons</span> }
+@media (max-width: 640px)  { <span class="code-val">sidebar hidden, bottom nav</span> }
+
+<span class="code-comment">/* Spacing scale (8px base) */</span>
+--<span class="code-key">space-1</span>: <span class="code-str">4px</span>    --<span class="code-key">space-2</span>: <span class="code-str">8px</span>
+--<span class="code-key">space-3</span>: <span class="code-str">12px</span>   --<span class="code-key">space-4</span>: <span class="code-str">16px</span>
+--<span class="code-key">space-5</span>: <span class="code-str">20px</span>   --<span class="code-key">space-6</span>: <span class="code-str">24px</span>
+--<span class="code-key">space-8</span>: <span class="code-str">32px</span>   --<span class="code-key">space-10</span>: <span class="code-str">40px</span>
+--<span class="code-key">space-12</span>: <span class="code-str">48px</span>   --<span class="code-key">space-16</span>: <span class="code-str">64px</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- FOOTER -->
+  <!-- ════════════════════════════════════════ -->
+  <div style="border-top:1px solid var(--border-subtle); padding-top:var(--space-8); margin-top:var(--space-16); display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">RabbitHole Design System v1.0 · April 2025</div>
+    <div style="font-family:var(--font-display); font-size:16px; color:var(--text-primary); display:flex;align-items:center;gap:6px;">
+      <span style="width:6px;height:6px;background:var(--amber-500);border-radius:50%;display:inline-block;"></span>
+      RabbitHole
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
